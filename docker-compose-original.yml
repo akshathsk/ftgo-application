@@ -97,15 +97,10 @@ services:
           baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
     ports:
       - "8081:8080"
-      - "36301:6300"     
     depends_on:
       - mysql
       - kafka
       - cdc-service
-      - jacoco
-    volumes:
-      - jacoco:/jacoco:ro
-      - ./classdump/consumerservice:/classdump/net/chrisrichardson/ftgo/consumerservice:rw
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_consumer_service
       SPRING_DATASOURCE_USERNAME: ftgo_consumer_service_user
@@ -114,7 +109,6 @@ services:
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
       EVENTUATE_DATABASE_SCHEMA: ftgo_consumer_service
-      JAVA_OPTS: "-Xmx64m -javaagent:/jacoco/lib/jacocoagent.jar=includes=net.chrisrichardson.ftgo.consumerservice.*,output=tcpserver,port=6300,address=*,classdumpdir=/classdump,append=false"
   ftgo-order-service:
     build: 
       context: ./ftgo-order-service
@@ -122,16 +116,11 @@ services:
           baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
     ports:
       - "8082:8080"
-      - "36302:6300"  
     depends_on:
       - mysql
       - kafka
       - cdc-service
       - zipkin
-      - jacoco
-    volumes:
-      - jacoco:/jacoco:ro
-      - ./classdump/orderservice:/classdump/net/chrisrichardson/ftgo/orderservice:rw
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_order_service
       SPRING_DATASOURCE_USERNAME: ftgo_order_service_user
@@ -143,111 +132,66 @@ services:
       SPRING_SLEUTH_SAMPLER_PROBABILITY: 1
       SPRING_ZIPKIN_BASE_URL: http://zipkin:9411/
       EVENTUATE_DATABASE_SCHEMA: ftgo_order_service
-      JAVA_OPTS: "-Xmx64m -javaagent:/jacoco/lib/jacocoagent.jar=includes=net.chrisrichardson.ftgo.orderservice.*,output=tcpserver,port=6300,address=*,classdumpdir=/classdump,append=false"
   ftgo-kitchen-service:
-    build: 
-      context: ./ftgo-kitchen-service
-      args:
-          baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
-    ports:
-      - "8083:8080"
-      - "36303:6300"     
-    depends_on:
-      - mysql
-      - kafka
-      - zookeeper
-      - cdc-service
-      - jacoco
-    volumes:
-      - jacoco:/jacoco:ro
-      - ./classdump/kitchenservice:/classdump/net/chrisrichardson/ftgo/kitchenservice:rw
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_kitchen_service
-      SPRING_DATASOURCE_USERNAME: ftgo_kitchen_service_user
-      SPRING_DATASOURCE_PASSWORD: ftgo_kitchen_service_password
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
-      EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      EVENTUATE_DATABASE_SCHEMA: ftgo_kitchen_service
-      JAVA_OPTS: "-Xmx64m -javaagent:/jacoco/lib/jacocoagent.jar=includes=net.chrisrichardson.ftgo.kitchenservice.*,output=tcpserver,port=6300,address=*,classdumpdir=/classdump,append=false"
+      build: 
+        context: ./ftgo-kitchen-service
+        args:
+            baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
+      ports:
+        - "8083:8080"
+      depends_on:
+        - mysql
+        - kafka
+        - zookeeper
+        - cdc-service
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_kitchen_service
+        SPRING_DATASOURCE_USERNAME: ftgo_kitchen_service_user
+        SPRING_DATASOURCE_PASSWORD: ftgo_kitchen_service_password
+        SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
+        EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+        EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+        EVENTUATE_DATABASE_SCHEMA: ftgo_kitchen_service
   ftgo-restaurant-service:
-    build: 
-      context: ./ftgo-restaurant-service
-      args:
-          baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
-    ports:
-      - "8084:8080"
-      - "36304:6300"     
-    depends_on:
-      - mysql
-      - kafka
-      - zookeeper
-      - cdc-service
-      - jacoco
-    volumes:
-      - jacoco:/jacoco:ro
-      - ./classdump/restaurantservice:/classdump/net/chrisrichardson/ftgo/restaurantservice:rw
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_restaurant_service
-      SPRING_DATASOURCE_USERNAME: ftgo_restaurant_service_user
-      SPRING_DATASOURCE_PASSWORD: ftgo_restaurant_service_password
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
-      EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      EVENTUATE_DATABASE_SCHEMA: ftgo_restaurant_service
-      JAVA_OPTS: "-Xmx64m -javaagent:/jacoco/lib/jacocoagent.jar=includes=net.chrisrichardson.ftgo.restaurantservice.*,output=tcpserver,port=6300,address=*,classdumpdir=/classdump,append=false"
+      build: 
+        context: ./ftgo-restaurant-service
+        args:
+            baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
+      ports:
+        - "8084:8080"
+      depends_on:
+        - mysql
+        - kafka
+        - zookeeper
+        - cdc-service
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_restaurant_service
+        SPRING_DATASOURCE_USERNAME: ftgo_restaurant_service_user
+        SPRING_DATASOURCE_PASSWORD: ftgo_restaurant_service_password
+        SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
+        EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+        EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+        EVENTUATE_DATABASE_SCHEMA: ftgo_restaurant_service
   ftgo-accounting-service:
-    build: 
-      context: ./ftgo-accounting-service
-      args:
-          baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
-    ports:
-      - "8085:8080"
-      - "36305:6300"     
-    depends_on:
-      - mysql
-      - kafka
-      - zookeeper
-      - cdc-service
-      - jacoco
-    volumes:
-      - jacoco:/jacoco:ro
-      - ./classdump/accountservice:/classdump/net/chrisrichardson/ftgo/accountservice:rw
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_accounting_service
-      SPRING_DATASOURCE_USERNAME: ftgo_accounting_service_user
-      SPRING_DATASOURCE_PASSWORD: ftgo_accounting_service_password
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
-      EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      EVENTUATE_DATABASE_SCHEMA: ftgo_accounting_service
-      JAVA_OPTS: "-Xmx64m -javaagent:/jacoco/lib/jacocoagent.jar=includes=net.chrisrichardson.ftgo.accountservice.*,output=tcpserver,port=6300,address=*,classdumpdir=/classdump,append=false"
-  ftgo-order-history-service:
-    build: 
-      context: ./ftgo-order-history-service
-      args:
-          baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
-    ports:
-      - "8086:8080"
-      - "36306:6300"     
-    depends_on:
-      - kafka
-      - zookeeper
-      - cdc-service
-      - dynamodblocal
-      - dynamodblocal-init
-      - jacoco
-    volumes:
-      - jacoco:/jacoco:ro
-      - ./classdump/orderhistory:/classdump/net/chrisrichardson/ftgo/cqrs/orderhistory:rw
-    environment:
-      EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-id_key}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-access_key}
-      AWS_DYNAMODB_ENDPOINT_URL: http://dynamodblocal:8000
-      AWS_REGION: ${AWS_REGION:-us-west-2}
-      JAVA_OPTS: "-Xmx64m -javaagent:/jacoco/lib/jacocoagent.jar=includes=net.chrisrichardson.ftgo.cqrs.orderhistory.*,output=tcpserver,port=6300,address=*,classdumpdir=/classdump,append=false"
+        build: 
+          context: ./ftgo-accounting-service
+          args:
+              baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
+        ports:
+          - "8085:8080"
+        depends_on:
+          - mysql
+          - kafka
+          - zookeeper
+          - cdc-service
+        environment:
+          SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_accounting_service
+          SPRING_DATASOURCE_USERNAME: ftgo_accounting_service_user
+          SPRING_DATASOURCE_PASSWORD: ftgo_accounting_service_password
+          SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
+          EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+          EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+          EVENTUATE_DATABASE_SCHEMA: ftgo_accounting_service
   ftgo-delivery-service:
     build: 
       context: ./ftgo-delivery-service
@@ -255,16 +199,11 @@ services:
           baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
     ports:
       - "8089:8080"
-      - "36309:6300"     
     depends_on:
       - mysql
       - kafka
       - cdc-service
       - zipkin
-      - jacoco
-    volumes:
-      - jacoco:/jacoco:ro
-      - ./classdump/deliveryservice:/classdump/net/chrisrichardson/ftgo/deliveryservice:rw
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_delivery_service
       SPRING_DATASOURCE_USERNAME: ftgo_delivery_service_user
@@ -276,7 +215,26 @@ services:
       SPRING_SLEUTH_SAMPLER_PROBABILITY: 1
       SPRING_ZIPKIN_BASE_URL: http://zipkin:9411/
       EVENTUATE_DATABASE_SCHEMA: ftgo_delivery_service
-      JAVA_OPTS: "-Xmx64m -javaagent:/jacoco/lib/jacocoagent.jar=includes=net.chrisrichardson.ftgo.deliveryservice.*,output=tcpserver,port=6300,address=*,classdumpdir=/classdump,append=false"
+  ftgo-order-history-service:
+    build: 
+      context: ./ftgo-order-history-service
+      args:
+          baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
+    ports:
+      - "8086:8080"
+    depends_on:
+      - kafka
+      - zookeeper
+      - cdc-service
+      - dynamodblocal
+      - dynamodblocal-init
+    environment:
+      EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-id_key}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-access_key}
+      AWS_DYNAMODB_ENDPOINT_URL: http://dynamodblocal:8000
+      AWS_REGION: ${AWS_REGION:-us-west-2}
   ftgo-api-gateway:
     build: 
       context: ./ftgo-api-gateway
@@ -293,11 +251,11 @@ services:
       SPRING_ZIPKIN_BASE_URL: http://zipkin:9411/
 
   zipkin:
-    image: openzipkin/zipkin:2.21
-    ports:
-      - "9411:9411"
-    environment:
-      JAVA_OPTS: -Xmx128m
+      image: openzipkin/zipkin:2.21
+      ports:
+       - "9411:9411"
+      environment:
+        JAVA_OPTS: -Xmx128m
 
   dynamodblocal:
     build: ./dynamodblocal
@@ -325,11 +283,3 @@ services:
       - kafka
     environment:
       KAFKA_BROKERS: kafka:29092
-     
-  jacoco:
-    image: ictu/jacoco-agent-docker:latest
-    volumes:
-      - jacoco:/jacoco:ro
-
-volumes:
-  jacoco:      
