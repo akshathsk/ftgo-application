@@ -105,7 +105,7 @@ services:
       - jacoco
     volumes:
       - jacoco:/jacoco:ro
-      - ./classdump/consumerservice:/classdump/net/chrisrichardson/ftgo/consumerservice:rw
+      - ./classdump:/classdump:rw
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_consumer_service
       SPRING_DATASOURCE_USERNAME: ftgo_consumer_service_user
@@ -131,7 +131,7 @@ services:
       - jacoco
     volumes:
       - jacoco:/jacoco:ro
-      - ./classdump/orderservice:/classdump/net/chrisrichardson/ftgo/orderservice:rw
+      - ./classdump:/classdump:rw
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_order_service
       SPRING_DATASOURCE_USERNAME: ftgo_order_service_user
@@ -160,7 +160,7 @@ services:
       - jacoco
     volumes:
       - jacoco:/jacoco:ro
-      - ./classdump/kitchenservice:/classdump/net/chrisrichardson/ftgo/kitchenservice:rw
+      - ./classdump:/classdump:rw
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_kitchen_service
       SPRING_DATASOURCE_USERNAME: ftgo_kitchen_service_user
@@ -186,7 +186,7 @@ services:
       - jacoco
     volumes:
       - jacoco:/jacoco:ro
-      - ./classdump/restaurantservice:/classdump/net/chrisrichardson/ftgo/restaurantservice:rw
+      - ./classdump:/classdump:rw
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_restaurant_service
       SPRING_DATASOURCE_USERNAME: ftgo_restaurant_service_user
@@ -212,7 +212,7 @@ services:
       - jacoco
     volumes:
       - jacoco:/jacoco:ro
-      - ./classdump/accountservice:/classdump/net/chrisrichardson/ftgo/accountservice:rw
+      - ./classdump:/classdump:rw
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_accounting_service
       SPRING_DATASOURCE_USERNAME: ftgo_accounting_service_user
@@ -221,7 +221,7 @@ services:
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
       EVENTUATE_DATABASE_SCHEMA: ftgo_accounting_service
-      JAVA_OPTS: "-Xmx64m -javaagent:/jacoco/lib/jacocoagent.jar=includes=net.chrisrichardson.ftgo.accountservice.*,output=tcpserver,port=6300,address=*,classdumpdir=/classdump,append=false"
+      JAVA_OPTS: "-Xmx64m -javaagent:/jacoco/lib/jacocoagent.jar=includes=net.chrisrichardson.ftgo.accountingservice.*,output=tcpserver,port=6300,address=*,classdumpdir=/classdump,append=false"
   ftgo-order-history-service:
     build: 
       context: ./ftgo-order-history-service
@@ -239,7 +239,7 @@ services:
       - jacoco
     volumes:
       - jacoco:/jacoco:ro
-      - ./classdump/orderhistory:/classdump/net/chrisrichardson/ftgo/cqrs/orderhistory:rw
+      - ./classdump:/classdump:rw
     environment:
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
@@ -264,7 +264,7 @@ services:
       - jacoco
     volumes:
       - jacoco:/jacoco:ro
-      - ./classdump/deliveryservice:/classdump/net/chrisrichardson/ftgo/deliveryservice:rw
+      - ./classdump:/classdump:rw
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql/ftgo_delivery_service
       SPRING_DATASOURCE_USERNAME: ftgo_delivery_service_user

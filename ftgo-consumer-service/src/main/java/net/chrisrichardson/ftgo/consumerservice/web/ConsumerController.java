@@ -82,7 +82,7 @@ public class ConsumerController {
     try {
       return (ResponseEntity<?>)
           restTemplate.getForObject(
-              "http://192.168.1.8:8083/restaurants" + restaurantId, Object.class);
+              "http://192.168.1.8:8083/restaurants/" + restaurantId, Object.class);
     } catch (HttpClientErrorException e) {
       return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
     }
