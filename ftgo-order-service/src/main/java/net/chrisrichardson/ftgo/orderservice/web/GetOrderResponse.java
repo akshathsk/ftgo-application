@@ -6,22 +6,22 @@ import net.chrisrichardson.ftgo.orderservice.api.events.OrderState;
 public class GetOrderResponse {
   private long orderId;
   private OrderState state;
-  private Money orderTotal;
+  private Double orderTotal;
 
   private GetOrderResponse() {
   }
 
-  public GetOrderResponse(long orderId, OrderState state, Money orderTotal) {
+  public GetOrderResponse(long orderId, OrderState state, Double orderTotal) {
     this.orderId = orderId;
     this.state = state;
     this.orderTotal = orderTotal;
   }
 
-  public Money getOrderTotal() {
+  public Double getOrderTotal() {
     return orderTotal;
   }
 
-  public void setOrderTotal(Money orderTotal) {
+  public void setOrderTotal(Double orderTotal) {
     this.orderTotal = orderTotal;
   }
 

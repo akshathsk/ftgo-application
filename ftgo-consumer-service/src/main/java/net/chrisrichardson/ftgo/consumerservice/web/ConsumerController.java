@@ -95,10 +95,9 @@ public class ConsumerController {
   }
 
   @RequestMapping(path = "order-history-service/orders/{orderId}", method = RequestMethod.GET)
-  public ResponseEntity<?> orderHistoryServiceGetOrder(@PathVariable String orderId) {
+  public Object orderHistoryServiceGetOrder(@PathVariable String orderId) {
     try {
-      return (ResponseEntity<?>)
-          restTemplate.getForObject("http://192.168.1.8:8086/orders/" + orderId, Object.class);
+      return restTemplate.getForObject("http://192.168.1.8:8086/orders/" + orderId, Object.class);
     } catch (HttpClientErrorException e) {
       return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
     }
@@ -112,48 +111,48 @@ public class ConsumerController {
   }
 
   @RequestMapping(path = "order-service/orders/{orderId}", method = RequestMethod.GET)
-  public ResponseEntity<?> orderServiceGetOrder(@PathVariable long orderId) {
+  public Object orderServiceGetOrder(@PathVariable long orderId) {
     try {
-      return (ResponseEntity<?>)
+      Object obj =
           restTemplate.getForObject("http://192.168.1.8:8082/orders/" + orderId, Object.class);
+      System.out.println("orderServiceGetOrder : " + obj.toString());
+      return obj;
     } catch (HttpClientErrorException e) {
+      System.out.println("orderServiceGetOrder Error : " + e.getResponseBodyAsString());
       return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
     }
   }
 
   @RequestMapping(path = "order-service/orders/{orderId}/cancel", method = RequestMethod.POST)
-  public ResponseEntity<?> orderServiceCancel(@PathVariable long orderId) {
+  public Object orderServiceCancel(@PathVariable long orderId) {
     try {
-      return (ResponseEntity<?>)
-          restTemplate
-              .postForEntity(
-                  "http://192.168.1.8:8082/orders/" + orderId + "/cancel", null, Object.class)
-              .getBody();
+      return restTemplate
+          .postForEntity(
+              "http://192.168.1.8:8082/orders/" + orderId + "/cancel", null, Object.class)
+          .getBody();
     } catch (HttpClientErrorException e) {
       return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
     }
   }
 
   @RequestMapping(path = "order-service/orders/{orderId}/revise", method = RequestMethod.POST)
-  public ResponseEntity<?> orderServiceRevise(
+  public Object orderServiceRevise(
       @PathVariable long orderId, @RequestBody ReviseOrderRequest request) {
     try {
-      return (ResponseEntity<?>)
-          restTemplate
-              .postForEntity(
-                  "http://192.168.1.8:8082/orders/" + orderId + "/revise", request, Object.class)
-              .getBody();
+      return restTemplate
+          .postForEntity(
+              "http://192.168.1.8:8082/orders/" + orderId + "/revise", request, Object.class)
+          .getBody();
     } catch (HttpClientErrorException e) {
       return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
     }
   }
 
-  @RequestMapping(path = "order-service/restaurants/{restaurantId}", method = RequestMethod.POST)
-  public ResponseEntity<?> orderServiceGetRestaurant(@PathVariable long restaurantId) {
+  @RequestMapping(path = "order-service/restaurants/{restaurantId}", method = RequestMethod.GET)
+  public Object orderServiceGetRestaurant(@PathVariable long restaurantId) {
     try {
-      return (ResponseEntity<?>)
-          restTemplate.getForObject(
-              "http://192.168.1.8:8082/restaurants/" + restaurantId, Object.class);
+      return restTemplate.getForObject(
+          "http://192.168.1.8:8082/restaurants/" + restaurantId, Object.class);
     } catch (HttpClientErrorException e) {
       return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
     }
@@ -171,9 +170,8 @@ public class ConsumerController {
       method = RequestMethod.GET)
   public Object restaurantServiceGet(@PathVariable long restaurantId) {
     try {
-      return
-          restTemplate.getForObject(
-              "http://192.168.1.8:8084/restaurants/" + restaurantId, Object.class);
+      return restTemplate.getForObject(
+          "http://192.168.1.8:8084/restaurants/" + restaurantId, Object.class);
     } catch (HttpClientErrorException e) {
       return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
     }

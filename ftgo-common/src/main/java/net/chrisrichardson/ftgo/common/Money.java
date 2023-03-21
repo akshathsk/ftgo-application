@@ -18,6 +18,15 @@ public class Money implements Serializable{
   public Money() {
   }
 
+
+  public BigDecimal getAmount() {
+    return amount;
+  }
+
+  public void setAmount(BigDecimal amount) {
+    this.amount = amount;
+  }
+
   public Money(BigDecimal amount) {
     this.amount = amount;
   }
