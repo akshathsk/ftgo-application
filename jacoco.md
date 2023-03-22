@@ -8,5 +8,5 @@
 - Dump all runtime classfiles, run `./jacoco-dump.sh`
 - Shut down and remove service containers, run `./gradlew :composeDown`
 - Change the permission of all dumped classfiles, run `sudo chmod -R 755 classdump`
-- Generate jacoco report, run `./jacoco-generate.sh`
+- Generate jacoco report, run `java -jar jacoco/lib/jacococli.jar report report/*.exec --classfiles classdump/ --html report`
 - The generated reports will be in a folder called `report`
