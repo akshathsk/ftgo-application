@@ -1,0 +1,12 @@
+# How to Generate Jacoco report
+- Download jacoco cli, run `wget https://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.8.8/jacoco-0.8.8.zip && unzip remotecontent\?filepath\=org%2Fjacoco%2Fjacoco%2F0.8.8%2Fjacoco-0.8.8.zip -d jacoco`
+- Build Spring Cloud Contract, run `./gradlew buildContracts`
+- Build other services, run `./gradlew assemble`
+- Remove dumped classfile from last time, run `sudo rm -rf classdump`
+- Start service containers, run `./gradlew :composeUp`
+- Explore the APIs in the swagger page
+- Dump all runtime classfiles, run `./jacoco-dump.sh`
+- Shut down and remove service containers, run `./gradlew :composeDown`
+- Change the permission of all dumped classfiles, run `sudo chmod -R 755 classdump`
+- Generate jacoco report, run `./jacoco-generate.sh`
+- The generated reports will be in a folder called `report`
